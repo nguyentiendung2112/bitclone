@@ -6,7 +6,6 @@ cc_binary(
 cc_test(
     name = "test-hashmap",
     srcs = glob(["**/*.cc"]),
-
     deps = [
         "@googletest//:gtest",
         "@googletest//:gtest_main",
