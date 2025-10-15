@@ -6,23 +6,24 @@
 #define DOUBLYLINKEDLIST_H
 #include "../byte_buffer/BytesBuffer.h"
 
-
+template <typename T>
 struct Node {
-  BytesBuffer data;
+  T* data;
   Node *prev = nullptr;
   Node *next = nullptr;
 };
 
+template <typename T>
 class DoublyLinkedList {
   private:
-    Node* head = nullptr;
-    Node* tail = nullptr;
+    Node<T>* head = nullptr;
+    Node<T>* tail = nullptr;
   public:
-    Node* addTail(const BytesBuffer& data);
-    Node* addHead(const BytesBuffer& data);
+    Node<T>* addTail(const BytesBuffer& data);
+    Node<T>* addHead(const BytesBuffer& data);
     void removeHead();
     void removeTail();
-    void moveToHead(const Node* node);
+    void moveToHead(Node<T>* node) const;
     // for debug
     void print();
 };
