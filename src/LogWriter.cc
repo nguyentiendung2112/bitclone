@@ -6,6 +6,6 @@
 
 #include "FileEntry.h"
 
-LogIndex LogWriter::append(FileEntry) {
-  return LogIndex(0,0);
-}
+// LogIndex LogWriter::append(FileEntry) {
+//   return LogIndex(0,0);
+// }
