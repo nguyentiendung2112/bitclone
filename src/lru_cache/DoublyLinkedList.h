@@ -5,28 +5,34 @@
 #ifndef DOUBLYLINKEDLIST_H
 #define DOUBLYLINKEDLIST_H
 #include <iostream>
-#include <__ostream/basic_ostream.h>
 
 #include "../byte_buffer/BytesBuffer.h"
 
 template <typename T>
-struct Node {
+struct DoublyLinkedListNode {
+  int key;
   T data;
-  Node *prev = nullptr;
-  Node *next = nullptr;
+  DoublyLinkedListNode *prev = nullptr;
+  DoublyLinkedListNode *next = nullptr;
+
+  DoublyLinkedListNode(int key, T data) {
+    this->key = key;
+    this->data = data;
+  }
 };
 
 template <typename T>
 class DoublyLinkedList {
-    Node<T>* head = nullptr;
-    Node<T>* tail = nullptr;
+    DoublyLinkedListNode<T>* head = nullptr;
+    DoublyLinkedListNode<T>* tail = nullptr;
     size_t size = 0;
   public:
-    Node<T>* addTail(const T& data);
-    Node<T>* addHead(const T& data);
+    DoublyLinkedListNode<T>* addTail(const T& data, int key=0);
+    DoublyLinkedListNode<T>* addHead(const T& data, int key=0);
+    DoublyLinkedListNode<T>* getTail();
     void removeHead();
     void removeTail();
-    void moveToHead(Node<T>* node);
+    void moveToHead(DoublyLinkedListNode<T>* node);
     // for debug
     void print();
     std::string str();
@@ -39,6 +45,12 @@ class DoublyLinkedList {
     }
 };
 
+inline std::string to_string(BytesBuffer data) {
+  return "BytesBuffer";
+}
 
+inline std::string to_string(int data) {
+  return std::to_string(data);
+}
 
 #endif //DOUBLYLINKEDLIST_H
