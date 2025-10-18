@@ -30,12 +30,18 @@ class HashMap {
     void remove(int key);
     V get(int key);
     V getOrDefault(int key, V default_value);
+
     ~HashMap() {
-      for (int i = 0; i < this->number_of_buckets; i++) {
-        delete this->buckets[i];
+      for (int i = 0; i < this->number_of_buckets; ++i) {
+        Node<V>* current = this->buckets[i];
+        while (current != nullptr) {
+          Node<V>* temp = current;
+          current = current->next;
+          delete temp;
+        }
       }
-      delete this->buckets;
-    }
+      delete[] this->buckets;
+
 };
 
 template<typename V>

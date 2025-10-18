@@ -10,5 +10,21 @@ TEST(HashMap, put) {
   auto hash_map = HashMap<int>();
   hash_map.put(1, 10);
   EXPECT_EQ(hash_map.get(1), 10);
+  hash_map.put(2, 20);
+  EXPECT_EQ(hash_map.get(2), 20);
+  hash_map.put(2, 30);
+  EXPECT_EQ(hash_map.get(2), 30);
 }
+
+TEST(HashMap, get) {
+  auto hash_map = HashMap<int>();
+  hash_map.put(1, 10);
+  EXPECT_EQ(hash_map.get(1), 10);
+  hash_map.put(2, 20);
+  EXPECT_EQ(hash_map.get(2), 20);
+}
+
+}
+
+
 }
