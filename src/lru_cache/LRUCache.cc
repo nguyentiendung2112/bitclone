@@ -12,7 +12,7 @@ V LRUCache<V>::get(int key) {
     doublyLinkedList->moveToHead(node);
     return node->data;
   }
-  throw std::invalid_argument("Key not found");
+  throw std::out_of_range("Key not found");
 }
 template<typename V>
 void LRUCache<V>::put(int key, V value) {
