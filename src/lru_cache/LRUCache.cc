@@ -6,7 +6,7 @@
 #include "../byte_buffer/BytesBuffer.h"
 
 template<typename V>
-V LRUCache<V>::get(int key) {
+V LRUCache<V>::get(uint64_t key) {
   if (this->hashmap->has(key)) {
     auto node = this->hashmap->get(key);
     doublyLinkedList->moveToHead(node);
@@ -15,7 +15,7 @@ V LRUCache<V>::get(int key) {
   throw std::out_of_range("Key not found");
 }
 template<typename V>
-void LRUCache<V>::put(int key, V value) {
+void LRUCache<V>::put(uint64_t key, V value) {
   if (this->hashmap->has(key)) {
     auto doublyLinkedListNode = hashmap->get(key);
     doublyLinkedListNode->data = value;
@@ -33,7 +33,7 @@ void LRUCache<V>::put(int key, V value) {
 
 
 template<typename V>
-void LRUCache<V>::remove(int key) {
+void LRUCache<V>::remove(uint64_t key) {
   auto doublyLinkedListNode = hashmap->get(key);
   hashmap->remove(key);
   doublyLinkedList->moveToHead(doublyLinkedListNode);
@@ -54,7 +54,7 @@ std::string LRUCache<V>::str() {
 }
 
 template<typename V>
-bool LRUCache<V>::has(int key) {
+bool LRUCache<V>::has(uint64_t key) {
   return this->hashmap->has(key);
 }
 

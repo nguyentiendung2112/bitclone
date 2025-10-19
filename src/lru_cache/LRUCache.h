@@ -31,10 +31,10 @@ class LRUCache {
       delete this->doublyLinkedList;
     }
 
-    V get(int key);
-    void put(int key, V value);
-    void remove(int key);
-    bool has(int key);
+    V get(uint64_t key);
+    void put(uint64_t key, V value);
+    void remove(uint64_t key);
+    bool has(uint64_t key);
 
     // debug
     std::string str();

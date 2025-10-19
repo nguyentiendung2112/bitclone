@@ -21,7 +21,7 @@ class HashMap {
   HashMapNode<V> **buckets;
 
   public:
-    explicit HashMap(int numberOfBuckets = DEFAULT_NUMBER_OF_BUCKETS) {
+    explicit HashMap(uint64_t numberOfBuckets = DEFAULT_NUMBER_OF_BUCKETS) {
       this->number_of_buckets = numberOfBuckets;
       this->buckets = new HashMapNode<V> *[this->number_of_buckets]();
     }

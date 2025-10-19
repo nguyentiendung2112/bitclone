@@ -10,12 +10,12 @@
 
 template<typename T>
 struct DoublyLinkedListNode {
-  int key;
+  uint64_t key;
   T data;
   DoublyLinkedListNode *prev = nullptr;
   DoublyLinkedListNode *next = nullptr;
 
-  DoublyLinkedListNode(int key, T data) {
+  DoublyLinkedListNode(uint64_t key, T data) {
     this->key = key;
     this->data = data;
   }

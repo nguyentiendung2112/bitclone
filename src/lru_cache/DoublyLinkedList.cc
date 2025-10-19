@@ -103,6 +103,8 @@ template<typename T>
 std::string DoublyLinkedList<T>::str() {
   std::string result = "";
   const DoublyLinkedListNode<T> *node = head;
+  if (head == nullptr)
+    return result;
   while (node != tail) {
     result += dl_list::to_string(node->key)+":"+ dl_list::to_string(node->data) + " -> ";
     node = node->next;
@@ -115,6 +117,8 @@ template<typename T>
 std::string DoublyLinkedList<T>::strReverse() {
   std::string result = "";
   const DoublyLinkedListNode<T> *node = tail;
+  if (tail == nullptr)
+    return result;
   while (node != head) {
     result += dl_list::to_string(node->data) + " -> ";
     node = node->prev;
