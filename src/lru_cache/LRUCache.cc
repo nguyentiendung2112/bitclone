@@ -3,6 +3,7 @@
 //
 
 #include "LRUCache.h"
+#include "../byte_buffer/BytesBuffer.h"
 
 template<typename V>
 V LRUCache<V>::get(int key) {

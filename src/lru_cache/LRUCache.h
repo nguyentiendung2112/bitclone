@@ -9,8 +9,6 @@
 
 #include "DoublyLinkedList.h"
 #include "HashMap.h"
-#include "../byte_buffer/BytesBuffer.h"
-
 
 #define DEFAULT_CAPACITY 64
 // LRU can be created by doubly linked listt
