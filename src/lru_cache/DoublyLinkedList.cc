@@ -103,10 +103,10 @@ std::string DoublyLinkedList<T>::str() {
   std::string result = "";
   const DoublyLinkedListNode<T> *node = head;
   while (node != tail) {
-    result += to_string(node->key)+":"+to_string(node->data) + " -> ";
+    result += dl_list::to_string(node->key)+":"+ dl_list::to_string(node->data) + " -> ";
     node = node->next;
   }
-  result +=to_string(node->key)+ ":" + to_string(node->data);
+  result +=dl_list::to_string(node->key)+ ":" + dl_list::to_string(node->data);
   return result;
 }
 
@@ -115,10 +115,10 @@ std::string DoublyLinkedList<T>::strReverse() {
   std::string result = "";
   const DoublyLinkedListNode<T> *node = tail;
   while (node != head) {
-    result += to_string(node->data) + " -> ";
+    result += dl_list::to_string(node->data) + " -> ";
     node = node->prev;
   }
-  result += to_string(node->data);
+  result += dl_list::to_string(node->data);
   return result;
 }
 

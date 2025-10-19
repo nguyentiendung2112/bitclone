@@ -8,7 +8,7 @@
 
 #include "../byte_buffer/BytesBuffer.h"
 
-template <typename T>
+template<typename T>
 struct DoublyLinkedListNode {
   int key;
   T data;
@@ -21,18 +21,19 @@ struct DoublyLinkedListNode {
   }
 };
 
-template <typename T>
+template<typename T>
 class DoublyLinkedList {
-    DoublyLinkedListNode<T>* head = nullptr;
-    DoublyLinkedListNode<T>* tail = nullptr;
-    size_t size = 0;
+  DoublyLinkedListNode<T> *head = nullptr;
+  DoublyLinkedListNode<T> *tail = nullptr;
+  size_t size = 0;
+
   public:
-    DoublyLinkedListNode<T>* addTail(const T& data, int key=0);
-    DoublyLinkedListNode<T>* addHead(const T& data, int key=0);
-    DoublyLinkedListNode<T>* getTail();
+    DoublyLinkedListNode<T> *addTail(const T &data, int key = 0);
+    DoublyLinkedListNode<T> *addHead(const T &data, int key = 0);
+    DoublyLinkedListNode<T> *getTail();
     void removeHead();
     void removeTail();
-    void moveToHead(DoublyLinkedListNode<T>* node);
+    void moveToHead(DoublyLinkedListNode<T> *node);
     // for debug
     void print();
     std::string str();
@@ -45,12 +46,14 @@ class DoublyLinkedList {
     }
 };
 
+namespace dl_list {
 inline std::string to_string(BytesBuffer data) {
   return "BytesBuffer";
 }
 
 inline std::string to_string(int data) {
   return std::to_string(data);
+}
 }
 
 #endif //DOUBLYLINKEDLIST_H
