@@ -4,6 +4,9 @@
 
 #ifndef LRUCACHE_H
 #define LRUCACHE_H
+
+#include <string>
+
 #include "DoublyLinkedList.h"
 #include "HashMap.h"
 #include "../byte_buffer/BytesBuffer.h"
