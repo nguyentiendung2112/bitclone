@@ -5,6 +5,7 @@
 #include "DoublyLinkedList.h"
 
 #include <iostream>
+#include <string>
 
 template <typename T>
 DoublyLinkedListNode<T>* DoublyLinkedList<T>::addHead(const T& data, int key) {
