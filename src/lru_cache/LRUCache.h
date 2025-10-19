@@ -10,8 +10,8 @@
 #include "DoublyLinkedList.h"
 #include "HashMap.h"
 
-#define DEFAULT_CAPACITY 64
-// LRU can be created by doubly linked listt
+inline constexpr size_t DEFAULT_CAPACITY = 64;
+
 template<typename V>
 class LRUCache {
   size_t size = 0;

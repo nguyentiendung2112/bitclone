@@ -33,7 +33,7 @@ class HashMap {
     V getOrDefault(uint64_t key, V default_value);
 
     ~HashMap() {
-      for (int i = 0; i < this->number_of_buckets; ++i) {
+      for (uint64_t i = 0; i < this->number_of_buckets; ++i) {
         HashMapNode<V>* current = this->buckets[i];
         while (current != nullptr) {
           HashMapNode<V>* temp = current;
@@ -47,7 +47,7 @@ class HashMap {
 
 template<typename V>
 void HashMap<V>::put(uint64_t key, V value) {
-  int hash = key % number_of_buckets;
+  uint64_t hash = key % number_of_buckets;
   auto *node = new HashMapNode<V>;
   node->data = value;
   node->key = key;
@@ -56,7 +56,7 @@ void HashMap<V>::put(uint64_t key, V value) {
 }
 template<typename V>
 void HashMap<V>::remove(uint64_t key) {
-  int hash = key % number_of_buckets;
+  uint64_t hash = key % number_of_buckets;
   HashMapNode<V> *head = this->buckets[hash];
   HashMapNode<V> *prev = nullptr;
   while (head != nullptr) {
@@ -73,7 +73,7 @@ void HashMap<V>::remove(uint64_t key) {
 }
 template<typename V>
 V HashMap<V>::get(uint64_t key) {
-  int hash = key % number_of_buckets;
+  uint64_t hash = key % number_of_buckets;
   HashMapNode<V> *head = this->buckets[hash];
   while (head != nullptr) {
     if (head->key == key) {
@@ -96,7 +96,7 @@ V HashMap<V>::getOrDefault(uint64_t key, V default_value) {
 
 template<typename V>
 bool HashMap<V>::has(uint64_t key) {
-  int hash = key % number_of_buckets;
+  uint64_t hash = key % number_of_buckets;
   HashMapNode<V> *head = this->buckets[hash];
   while (head != nullptr) {
     if (head->key == key) {
