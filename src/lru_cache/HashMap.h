@@ -11,26 +11,26 @@
 template<typename T>
 struct HashMapNode {
   T data;
-  int key;
+  uint64_t key;
   HashMapNode *next = nullptr;
 };
 
 template<typename V>
 class HashMap {
-  int number_of_buckets;
+  uint64_t number_of_buckets;
   HashMapNode<V> **buckets;
 
   public:
     explicit HashMap(int numberOfBuckets = DEFAULT_NUMBER_OF_BUCKETS) {
       this->number_of_buckets = numberOfBuckets;
-      this->buckets = new HashMapNode<V> *[this->number_of_buckets];
+      this->buckets = new HashMapNode<V> *[this->number_of_buckets]();
     }
 
-    void put(int key, V value);
-    void remove(int key);
-    bool has(int key);
-    V get(int key);
-    V getOrDefault(int key, V default_value);
+    void put(uint64_t key, V value);
+    void remove(uint64_t key);
+    bool has(uint64_t key);
+    V get(uint64_t key);
+    V getOrDefault(uint64_t key, V default_value);
 
     ~HashMap() {
       for (int i = 0; i < this->number_of_buckets; ++i) {
@@ -46,7 +46,7 @@ class HashMap {
 };
 
 template<typename V>
-void HashMap<V>::put(int key, V value) {
+void HashMap<V>::put(uint64_t key, V value) {
   int hash = key % number_of_buckets;
   auto *node = new HashMapNode<V>;
   node->data = value;
@@ -55,7 +55,7 @@ void HashMap<V>::put(int key, V value) {
   this->buckets[hash] = node;
 }
 template<typename V>
-void HashMap<V>::remove(int key) {
+void HashMap<V>::remove(uint64_t key) {
   int hash = key % number_of_buckets;
   HashMapNode<V> *head = this->buckets[hash];
   HashMapNode<V> *prev = nullptr;
@@ -72,7 +72,7 @@ void HashMap<V>::remove(int key) {
   }
 }
 template<typename V>
-V HashMap<V>::get(int key) {
+V HashMap<V>::get(uint64_t key) {
   int hash = key % number_of_buckets;
   HashMapNode<V> *head = this->buckets[hash];
   while (head != nullptr) {
@@ -86,7 +86,7 @@ V HashMap<V>::get(int key) {
 
 
 template<typename V>
-V HashMap<V>::getOrDefault(int key, V default_value) {
+V HashMap<V>::getOrDefault(uint64_t key, V default_value) {
   try {
     return get(key);
   } catch (const std::out_of_range &e) {
@@ -95,13 +95,14 @@ V HashMap<V>::getOrDefault(int key, V default_value) {
 }
 
 template<typename V>
-bool HashMap<V>::has(int key) {
+bool HashMap<V>::has(uint64_t key) {
   int hash = key % number_of_buckets;
   HashMapNode<V> *head = this->buckets[hash];
   while (head != nullptr) {
     if (head->key == key) {
       return true;
     }
+    head = head->next;
   }
   return false;
 }

@@ -42,3 +42,27 @@ cc_test(
         "@googletest//:gtest_main",
     ],
 )
+
+cc_test(
+    name = "test-lru-cache",
+    srcs = glob([
+        "tests/lru_cache/test_lru_cache.cc",
+    ]),
+    deps = [
+        ":cpp-dependencies",
+        "@googletest//:gtest",
+        "@googletest//:gtest_main",
+    ],
+)
+
+cc_test(
+    name = "test-all",
+    srcs = glob([
+        "tests/**/*.cc",
+    ]),
+    deps = [
+        ":cpp-dependencies",
+        "@googletest//:gtest",
+        "@googletest//:gtest_main",
+    ],
+)
