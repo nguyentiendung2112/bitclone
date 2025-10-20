@@ -9,55 +9,56 @@
 #include <stdexcept>
 
 template<typename T>
-struct Node {
+struct HashMapNode {
   T data;
-  int key;
-  Node *next = nullptr;
+  uint64_t key;
+  HashMapNode *next = nullptr;
 };
 
 template<typename V>
 class HashMap {
-  int number_of_buckets;
-  Node<V> **buckets;
+  uint64_t number_of_buckets;
+  HashMapNode<V> **buckets;
 
   public:
-    explicit HashMap(int numberOfBuckets = DEFAULT_NUMBER_OF_BUCKETS) {
+    explicit HashMap(uint64_t numberOfBuckets = DEFAULT_NUMBER_OF_BUCKETS) {
       this->number_of_buckets = numberOfBuckets;
-      this->buckets = new Node<V> *[this->number_of_buckets];
+      this->buckets = new HashMapNode<V> *[this->number_of_buckets]();
     }
 
-    void put(int key, V value);
-    void remove(int key);
-    V get(int key);
-    V getOrDefault(int key, V default_value);
+    void put(uint64_t key, V value);
+    void remove(uint64_t key);
+    bool has(uint64_t key);
+    V get(uint64_t key);
+    V getOrDefault(uint64_t key, V default_value);
 
     ~HashMap() {
-      for (int i = 0; i < this->number_of_buckets; ++i) {
-        Node<V>* current = this->buckets[i];
+      for (uint64_t i = 0; i < this->number_of_buckets; ++i) {
+        HashMapNode<V>* current = this->buckets[i];
         while (current != nullptr) {
-          Node<V>* temp = current;
+          HashMapNode<V>* temp = current;
           current = current->next;
           delete temp;
         }
       }
       delete[] this->buckets;
-
+    }
 };
 
 template<typename V>
-void HashMap<V>::put(int key, V value) {
-  int hash = key % number_of_buckets;
-  auto *node = new Node<V>;
+void HashMap<V>::put(uint64_t key, V value) {
+  uint64_t hash = key % number_of_buckets;
+  auto *node = new HashMapNode<V>;
   node->data = value;
   node->key = key;
   node->next = this->buckets[hash];
   this->buckets[hash] = node;
 }
 template<typename V>
-void HashMap<V>::remove(int key) {
-  int hash = key % number_of_buckets;
-  Node<V> *head = this->buckets[hash];
-  Node<V> *prev = nullptr;
+void HashMap<V>::remove(uint64_t key) {
+  uint64_t hash = key % number_of_buckets;
+  HashMapNode<V> *head = this->buckets[hash];
+  HashMapNode<V> *prev = nullptr;
   while (head != nullptr) {
     if (head->key == key) {
       if (prev == nullptr) {
@@ -71,9 +72,9 @@ void HashMap<V>::remove(int key) {
   }
 }
 template<typename V>
-V HashMap<V>::get(int key) {
-  int hash = key % number_of_buckets;
-  Node<V> *head = this->buckets[hash];
+V HashMap<V>::get(uint64_t key) {
+  uint64_t hash = key % number_of_buckets;
+  HashMapNode<V> *head = this->buckets[hash];
   while (head != nullptr) {
     if (head->key == key) {
       return head->data;
@@ -85,12 +86,25 @@ V HashMap<V>::get(int key) {
 
 
 template<typename V>
-V HashMap<V>::getOrDefault(int key, V default_value) {
+V HashMap<V>::getOrDefault(uint64_t key, V default_value) {
   try {
     return get(key);
   } catch (const std::out_of_range &e) {
     return default_value;
   }
+}
+
+template<typename V>
+bool HashMap<V>::has(uint64_t key) {
+  uint64_t hash = key % number_of_buckets;
+  HashMapNode<V> *head = this->buckets[hash];
+  while (head != nullptr) {
+    if (head->key == key) {
+      return true;
+    }
+    head = head->next;
+  }
+  return false;
 }
 
 

@@ -4,15 +4,40 @@
 
 #ifndef LRUCACHE_H
 #define LRUCACHE_H
-#include "../byte_buffer/BytesBuffer.h"
 
-// LRU can be created by doubly linked listt
+#include <string>
 
+#include "DoublyLinkedList.h"
+#include "HashMap.h"
+
+inline constexpr size_t DEFAULT_CAPACITY = 64;
+
+template<typename V>
 class LRUCache {
+  size_t size = 0;
+  size_t capacity;
+  HashMap<DoublyLinkedListNode<V>*>* hashmap;
+  DoublyLinkedList<V>* doublyLinkedList;
+  void evict();
+
   public:
-    BytesBuffer get(uint64_t key);
-    void put(uint64_t key, BytesBuffer value);
+    explicit LRUCache(size_t capacity = DEFAULT_CAPACITY) {
+      this->capacity = capacity;
+      this->hashmap = new HashMap<DoublyLinkedListNode<V>*>();
+      this->doublyLinkedList = new DoublyLinkedList<V>();
+    }
+    ~LRUCache() {
+      delete this->hashmap;
+      delete this->doublyLinkedList;
+    }
+
+    V get(uint64_t key);
+    void put(uint64_t key, V value);
     void remove(uint64_t key);
+    bool has(uint64_t key);
+
+    // debug
+    std::string str();
 };
 
 

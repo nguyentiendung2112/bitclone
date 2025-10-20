@@ -10,7 +10,7 @@ namespace DoublyLinkedTest {
     auto linked_list = DoublyLinkedList<int>();
     linked_list.addTail(10);
     linked_list.addTail(20);
-    EXPECT_EQ(linked_list.str(), "10 -> 20");
+    EXPECT_EQ(linked_list.str(), "0:10 -> 0:20");
     EXPECT_EQ(linked_list.strReverse(), "20 -> 10");
   }
 
@@ -19,7 +19,7 @@ namespace DoublyLinkedTest {
     auto linked_list = DoublyLinkedList<int>();
     linked_list.addHead(10);
     linked_list.addHead(20);
-    EXPECT_EQ(linked_list.str(), "20 -> 10");
+    EXPECT_EQ(linked_list.str(), "0:20 -> 0:10");
     EXPECT_EQ(linked_list.strReverse(), "10 -> 20");
   }
 
@@ -28,7 +28,7 @@ namespace DoublyLinkedTest {
     linked_list.addTail(10);
     linked_list.addTail(20);
     linked_list.removeTail();
-    EXPECT_EQ(linked_list.str(), "10");
+    EXPECT_EQ(linked_list.str(), "0:10");
     EXPECT_EQ(linked_list.strReverse(), "10");
   }
 
@@ -37,7 +37,7 @@ namespace DoublyLinkedTest {
     linked_list.addTail(10);
     linked_list.addTail(20);
     linked_list.removeHead();
-    EXPECT_EQ(linked_list.str(), "20");
+    EXPECT_EQ(linked_list.str(), "0:20");
     EXPECT_EQ(linked_list.strReverse(), "20");
   }
 
@@ -47,18 +47,18 @@ namespace DoublyLinkedTest {
     auto node2 =  linked_list.addTail(20);
     auto node3 = linked_list.addTail(30);
 
-    EXPECT_EQ(linked_list.str(), "10 -> 20 -> 30");
+    EXPECT_EQ(linked_list.str(), "0:10 -> 0:20 -> 0:30");
     // try move the head
     linked_list.moveToHead(node1);
-    EXPECT_EQ(linked_list.str(), "10 -> 20 -> 30");
+    EXPECT_EQ(linked_list.str(), "0:10 -> 0:20 -> 0:30");
 
     // try move the middle
     linked_list.moveToHead(node2);
-    EXPECT_EQ(linked_list.str(), "20 -> 10 -> 30");
+    EXPECT_EQ(linked_list.str(), "0:20 -> 0:10 -> 0:30");
 
     //try move the tail
     linked_list.moveToHead(node3);
-    EXPECT_EQ(linked_list.str(), "30 -> 20 -> 10");
+    EXPECT_EQ(linked_list.str(), "0:30 -> 0:20 -> 0:10");
     EXPECT_EQ(linked_list.strReverse(), "10 -> 20 -> 30");
     std::cout << "ok" << std::endl;
   }

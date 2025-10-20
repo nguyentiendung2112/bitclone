@@ -5,11 +5,11 @@
 #include "DoublyLinkedList.h"
 
 #include <iostream>
+#include <string>
 
 template <typename T>
-Node<T>* DoublyLinkedList<T>::addHead(const T& data) {
-  const auto node = new Node<T>();
-  node->data = data;
+DoublyLinkedListNode<T>* DoublyLinkedList<T>::addHead(const T& data, uint64_t key) {
+  const auto node = new DoublyLinkedListNode<T>(key, data);
 
   if (head == nullptr && tail == nullptr) {
     head = tail = node;
@@ -26,9 +26,8 @@ Node<T>* DoublyLinkedList<T>::addHead(const T& data) {
 }
 
 template <typename T>
-Node<T> *DoublyLinkedList<T>::addTail(const T& data) {
-  const auto node = new Node<T>();
-  node->data = data;
+DoublyLinkedListNode<T> *DoublyLinkedList<T>::addTail(const T& data, uint64_t key) {
+  const auto node = new DoublyLinkedListNode<T>(key, data);
 
   if (head == nullptr && tail == nullptr) {
     head = tail = node;
@@ -49,7 +48,7 @@ void DoublyLinkedList<T>::removeHead() {
   if (!head) {
     return;
   }
-  const Node<T> *node = head;
+  const DoublyLinkedListNode<T> *node = head;
 
   head = node->next;
   if (head != nullptr) {
@@ -65,7 +64,7 @@ void DoublyLinkedList<T>::removeHead() {
 template <typename T>
 void DoublyLinkedList<T>::removeTail() {
   if (tail != nullptr) {
-    const Node<T> *node = tail;
+    const DoublyLinkedListNode<T> *node = tail;
     auto prev = tail->prev;
     if (prev != nullptr) {
       prev->next = nullptr;
@@ -80,7 +79,7 @@ void DoublyLinkedList<T>::removeTail() {
 }
 
 template <typename T>
-void DoublyLinkedList<T>::moveToHead(Node<T> *node) {
+void DoublyLinkedList<T>::moveToHead(DoublyLinkedListNode<T> *node) {
   if (node == nullptr)
     return;
   auto prev = node->prev;
@@ -103,32 +102,42 @@ void DoublyLinkedList<T>::moveToHead(Node<T> *node) {
 template<typename T>
 std::string DoublyLinkedList<T>::str() {
   std::string result = "";
-  const Node<T> *node = head;
+  const DoublyLinkedListNode<T> *node = head;
+  if (head == nullptr)
+    return result;
   while (node != tail) {
-    result += std::to_string(node->data) + " -> ";
+    result += dl_list::to_string(node->key)+":"+ dl_list::to_string(node->data) + " -> ";
     node = node->next;
   }
-  result += std::to_string(node->data);
+  result +=dl_list::to_string(node->key)+ ":" + dl_list::to_string(node->data);
   return result;
 }
 
 template<typename T>
 std::string DoublyLinkedList<T>::strReverse() {
   std::string result = "";
-  const Node<T> *node = tail;
+  const DoublyLinkedListNode<T> *node = tail;
+  if (tail == nullptr)
+    return result;
   while (node != head) {
-    result += std::to_string(node->data) + " -> ";
+    result += dl_list::to_string(node->data) + " -> ";
     node = node->prev;
   }
-  result += std::to_string(node->data);
+  result += dl_list::to_string(node->data);
   return result;
 }
+
+
 
 template<typename T>
 void DoublyLinkedList<T>::print() {
   std::cout << str() << std::endl;
 }
 
-
+template<typename T>
+DoublyLinkedListNode<T> * DoublyLinkedList<T>::getTail() {
+  return this -> tail;
+}
 
 template class DoublyLinkedList<int>;
+template class DoublyLinkedList<BytesBuffer>;
