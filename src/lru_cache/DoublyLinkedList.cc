@@ -8,7 +8,7 @@
 #include <string>
 
 template <typename T>
-DoublyLinkedListNode<T>* DoublyLinkedList<T>::addHead(const T& data, int key) {
+DoublyLinkedListNode<T>* DoublyLinkedList<T>::addHead(const T& data, uint64_t key) {
   const auto node = new DoublyLinkedListNode<T>(key, data);
 
   if (head == nullptr && tail == nullptr) {
@@ -26,7 +26,7 @@ DoublyLinkedListNode<T>* DoublyLinkedList<T>::addHead(const T& data, int key) {
 }
 
 template <typename T>
-DoublyLinkedListNode<T> *DoublyLinkedList<T>::addTail(const T& data, int key) {
+DoublyLinkedListNode<T> *DoublyLinkedList<T>::addTail(const T& data, uint64_t key) {
   const auto node = new DoublyLinkedListNode<T>(key, data);
 
   if (head == nullptr && tail == nullptr) {
