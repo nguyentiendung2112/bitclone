@@ -10,24 +10,26 @@
 #include <string>
 
 class BytesBuffer {
-  std::byte* buffer;
+  const std::byte* buffer;
   long size;
   public:
-    BytesBuffer(std::byte* buffer, long size) {
+    BytesBuffer(const std::byte* buffer, long size) {
       this->buffer = buffer;
       this->size = size;
     }
-    BytesBuffer() {
-      this->buffer = nullptr;
-      this->size = 0;
-    }
-
-    std::string decode();
-
-    BytesBuffer fromString(const std::string& str);
 
     ~BytesBuffer() {
-        delete[] this->buffer;
+    }
+
+    [[nodiscard]] const std::byte * getBuffer() const {
+      return buffer;
+    }
+    [[nodiscard]] long getSize() const {
+      return size;
+    }
+    // debug
+    std::string str() {
+      return ("\""+std::string(reinterpret_cast<const char *>(this->buffer))+ "\"");
     }
 };
 
