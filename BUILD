@@ -73,6 +73,7 @@ cc_test(
     srcs = [
         "tests/cpp/file_handler/test_log_writer.cc",
     ],
+    args = ["--test_output=all"],
     data = glob(["tests/resources/*"]),
     deps = [
         ":cpp-dependencies",
