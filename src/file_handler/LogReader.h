@@ -5,38 +5,44 @@
 #ifndef LOGREADER_H
 #define LOGREADER_H
 
-#include <ios>
+#include <cstddef>
 
-#include <fcntl.h>
+#include <string>
+
 #include <unistd.h>
+#include <vector>
 
-#include "src/byte_buffer/BytesBuffer.h"
+#include "FileHandler.h"
+#include "LogIndex.h"
 
-using namespace std;
+template<typename K, typename V>
+class LogReader {
+  static std::unique_ptr<LogIndex> deserialize(std::vector<std::byte> &data) {
+    size_t pos = 0;
+    uint64_t key_size = 0, value_size = 0;
 
-class LogReader{
-  string filePath;
-  int fileDescriptor;
+    std::memcpy(&key_size, data.data() + pos, sizeof(uint64_t));
+    pos += sizeof(uint64_t);
+    std::memcpy(&value_size, data.data() + pos, sizeof(uint64_t));
+    pos += sizeof(uint64_t);
+    std::string key(reinterpret_cast<const char *>(data.data() + pos), key_size);
+    pos += key_size;
+    std::string value(reinterpret_cast<const char *>(data.data() + pos), value_size);
+    return std::make_unique<LogIndex>(key, value);
+  }
 
   public:
-  BytesBuffer* at(uint64_t pos, size_t size) const;
-  LogReader(const string& filePath, int fileDescriptor) {
-    this -> filePath = filePath;
-    this -> fileDescriptor = fileDescriptor;
-  }
+    LogReader() = default;
 
+    static std::unique_ptr<LogIndex> readRecordAt(int file_descriptor, size_t pos) {
+      std::vector<std::byte> header = FileHandler::readAt(file_descriptor, pos, sizeof(uint64_t) * 2);
+      uint64_t key_size = 0, value_size = 0;
+      std::memcpy(&key_size, header.data(), sizeof(uint64_t));
+      std::memcpy(&value_size, header.data() + sizeof(key_size), sizeof(uint64_t));
+      size_t total_size = sizeof(key_size) + sizeof(value_size) + key_size + value_size;
+      std::vector<std::byte> record = FileHandler::readAt(file_descriptor, pos, total_size);
+      return deserialize(record);
+    }
 };
 
-inline BytesBuffer* LogReader::at(uint64_t pos, size_t size) const {
-  auto* bytes_buffer = new BytesBuffer(new byte[size], size);
-  auto result = pread(this->fileDescriptor, (void *)bytes_buffer->getBuffer(), bytes_buffer->getSize(), pos);
-  if (result != size) {
-    throw std::runtime_error("failed to read file");
-  }
-  return  bytes_buffer;
-}
-
-
-
-
-#endif //LOGREADER_H
+#endif  // LOGREADER_H

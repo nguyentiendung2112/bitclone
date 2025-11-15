@@ -69,20 +69,6 @@ cc_test(
 )
 
 cc_test(
-    name = "test-log-writer",
-    srcs = [
-        "tests/cpp/file_handler/test_log_writer.cc",
-    ],
-    args = ["--test_output=all"],
-    data = glob(["tests/resources/*"]),
-    deps = [
-        ":cpp-dependencies",
-        "@googletest//:gtest",
-        "@googletest//:gtest_main",
-    ],
-)
-
-cc_test(
     name = "test-all",
     srcs = glob([
         "tests/cpp/**/*.cc",

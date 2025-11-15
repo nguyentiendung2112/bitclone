@@ -4,33 +4,60 @@
 
 #ifndef LOGWRITER_H
 #define LOGWRITER_H
+
+#include <cstddef>
 #include <string>
 #include <unistd.h>
 
-#include "src/byte_buffer/BytesBuffer.h"
+#include "FileHandler.h"
 
 
-class LogWriter{
-  std::string filePath;
-  int fileDescriptor;
+using namespace std;
 
-  public:
-    LogWriter(const std::string& filePath, int fileDescriptor) {
-      this -> filePath = filePath;
-      this -> fileDescriptor = fileDescriptor;
+class LogWriter {
+  static std::vector<byte> serialize(string key, std::byte *value, size_t value_size) {
+    // layout [uint64_t key_size][uint64_t value_size][key bytes][value bytes]
+
+    auto key_size = static_cast<uint64_t>(key.size());
+    auto val_size = static_cast<uint64_t>(value_size);
+
+    const size_t header_size = sizeof(key_size) + sizeof(val_size);
+    const size_t total_size = header_size + key.size() + value_size;
+
+    std::vector<std::byte> out;
+    out.resize(total_size);
+
+    size_t pos = 0;
+
+    // write key size
+    std::memcpy(out.data() + pos, &key_size, sizeof(key_size));
+    pos += sizeof(key_size);
+    // write value size
+    std::memcpy(out.data() + pos, &val_size, sizeof(val_size));
+    pos += sizeof(val_size);
+
+    // write key bytes
+    if (!key.empty()) {
+      std::memcpy(out.data() + pos, key.data(), key.size());
+      pos += key_size;
+    }
+    if (value != nullptr && value_size > 0) {
+      std::memcpy(out.data() + pos, value, value_size);
     }
 
-    void append(BytesBuffer* bytesBuffer) const {
-      off_t offset = lseek(this->fileDescriptor, 0, SEEK_END);
-      if (offset == (off_t) -1) {
-        throw std::runtime_error("Failed to find offset");
+    return out;
+  }
+
+  public:
+    LogWriter() = default;
+
+    static void appendRecord(int file_descriptor, const string &key, std::byte *value, const size_t value_size) {
+      if (file_descriptor < 0) {
+        throw std::runtime_error("invalid file descriptor");
       }
-      auto res = write(this->fileDescriptor, bytesBuffer->getBuffer(), bytesBuffer->getSize());
-      if (res<0) {
-        throw std::runtime_error("Failed to append file");
-      }
+      std::vector<std::byte> buf = serialize(key, value, value_size);
+      FileHandler::append(file_descriptor, buf);
     }
 };
 
-
-#endif //LOGWRITER_H
+#endif  // LOGWRITER_H
