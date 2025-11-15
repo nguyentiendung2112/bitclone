@@ -3,10 +3,9 @@
 //
 
 #include "LRUCache.h"
-#include "../byte_buffer/BytesBuffer.h"
 
-template<typename V>
-V LRUCache<V>::get(uint64_t key) {
+template <typename V>
+V LRUCache<V>::get(std::uint64_t key) {
   if (this->hashmap->has(key)) {
     auto node = this->hashmap->get(key);
     doublyLinkedList->moveToHead(node);
@@ -14,8 +13,9 @@ V LRUCache<V>::get(uint64_t key) {
   }
   throw std::out_of_range("Key not found");
 }
-template<typename V>
-void LRUCache<V>::put(uint64_t key, V value) {
+
+template <typename V>
+void LRUCache<V>::put(std::uint64_t key, V value) {
   if (this->hashmap->has(key)) {
     auto doublyLinkedListNode = hashmap->get(key);
     doublyLinkedListNode->data = value;
@@ -24,39 +24,34 @@ void LRUCache<V>::put(uint64_t key, V value) {
     auto doublyLinkedListNode = doublyLinkedList->addHead(value, key);
     hashmap->put(key, doublyLinkedListNode);
     if (size == capacity) {
-      this -> evict();
+      this->evict();
     } else {
-      ++ size;
+      ++size;
     }
   }
 }
 
 
-template<typename V>
-void LRUCache<V>::remove(uint64_t key) {
+template <typename V>
+void LRUCache<V>::remove(std::uint64_t key) {
   auto doublyLinkedListNode = hashmap->get(key);
   hashmap->remove(key);
   doublyLinkedList->moveToHead(doublyLinkedListNode);
   doublyLinkedList->removeHead();
-  size-- ;
+  size--;
 }
 
-template<typename V>
+template <typename V>
 void LRUCache<V>::evict() {
-    auto currentTail = doublyLinkedList->getTail();
-    hashmap->remove(currentTail->key);
-    doublyLinkedList->removeTail();
+  auto currentTail = doublyLinkedList->getTail();
+  hashmap->remove(currentTail->key);
+  doublyLinkedList->removeTail();
 }
 
-template<typename V>
-std::string LRUCache<V>::str() {
-  return doublyLinkedList->str();
-}
+template <typename V>
+std::string LRUCache<V>::str() { return doublyLinkedList->str(); }
 
-template<typename V>
-bool LRUCache<V>::has(uint64_t key) {
-  return this->hashmap->has(key);
-}
+template <typename V>
+bool LRUCache<V>::has(std::uint64_t key) { return this->hashmap->has(key); }
 
-template class LRUCache<BytesBuffer>;
 template class LRUCache<int>;

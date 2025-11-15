@@ -7,7 +7,7 @@
 namespace {
 
 TEST(HashMap, put) {
-  auto hash_map = HashMap<int>();
+  auto hash_map = HashMap<int, int>();
   hash_map.put(1, 10);
   EXPECT_EQ(hash_map.get(1), 10);
   hash_map.put(2, 20);
@@ -17,7 +17,7 @@ TEST(HashMap, put) {
 }
 
 TEST(HashMap, get) {
-  auto hash_map = HashMap<int>();
+  auto hash_map = HashMap<int, int>();
   hash_map.put(1, 10);
   EXPECT_EQ(hash_map.get(1), 10);
   hash_map.put(2, 20);
@@ -26,7 +26,7 @@ TEST(HashMap, get) {
 
 
 TEST(HashMap, remove) {
-  auto hash_map = HashMap<int>();
+  auto hash_map = HashMap<int, int>();
   hash_map.put(1, 10);
   EXPECT_EQ(hash_map.get(1), 10);
   hash_map.put(2, 20);
@@ -37,7 +37,7 @@ TEST(HashMap, remove) {
 
 
 TEST(HashMap, has) {
-  auto hash_map = HashMap<int>();
+  auto hash_map = HashMap<int, int>();
   hash_map.put(1, 10);
   hash_map.put(2, 20);
   EXPECT_TRUE(hash_map.has(1));

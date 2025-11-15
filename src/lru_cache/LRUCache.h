@@ -16,14 +16,14 @@ template<typename V>
 class LRUCache {
   size_t size = 0;
   size_t capacity;
-  HashMap<DoublyLinkedListNode<V>*>* hashmap;
+  HashMap<std::uint64_t, DoublyLinkedListNode<V>*>* hashmap;
   DoublyLinkedList<V>* doublyLinkedList;
   void evict();
 
   public:
     explicit LRUCache(size_t capacity = DEFAULT_CAPACITY) {
       this->capacity = capacity;
-      this->hashmap = new HashMap<DoublyLinkedListNode<V>*>();
+      this->hashmap = new HashMap<std::uint64_t, DoublyLinkedListNode<V>*>();
       this->doublyLinkedList = new DoublyLinkedList<V>();
     }
     ~LRUCache() {

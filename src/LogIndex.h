@@ -4,11 +4,12 @@
 
 #ifndef LOGINDEX_H
 #define LOGINDEX_H
+
 #include <cstdint>
 
 struct LogIndex {
-  uint64_t len;
-  uint64_t offset;
+  std::uint64_t len;
+  std::uint64_t offset;
 };
 
-#endif //LOGINDEX_H
+#endif  // LOGINDEX_H

@@ -22,7 +22,7 @@ cc_library(
 cc_test(
     name = "test-hashmap",
     srcs = glob([
-        "tests/lru_cache/test_hash_map.cc",
+        "tests/cpp/lru_cache/test_hash_map.cc",
     ]),
     deps = [
         ":cpp-dependencies",
@@ -34,7 +34,7 @@ cc_test(
 cc_test(
     name = "test-doubly-linked-list",
     srcs = glob([
-        "tests/lru_cache/test_doubly_linked_list.cc",
+        "tests/cpp/lru_cache/test_doubly_linked_list.cc",
     ]),
     deps = [
         ":cpp-dependencies",
@@ -46,8 +46,21 @@ cc_test(
 cc_test(
     name = "test-lru-cache",
     srcs = glob([
-        "tests/lru_cache/test_lru_cache.cc",
+        "tests/cpp/lru_cache/test_lru_cache.cc",
     ]),
+    deps = [
+        ":cpp-dependencies",
+        "@googletest//:gtest",
+        "@googletest//:gtest_main",
+    ],
+)
+
+cc_test(
+    name = "test-log-reader",
+    srcs = [
+        "tests/cpp/file_handler/test_log_reader.cc",
+    ],
+    data = ["tests/resources/file000"],
     deps = [
         ":cpp-dependencies",
         "@googletest//:gtest",
@@ -58,7 +71,7 @@ cc_test(
 cc_test(
     name = "test-all",
     srcs = glob([
-        "tests/**/*.cc",
+        "tests/cpp/**/*.cc",
     ]),
     deps = [
         ":cpp-dependencies",
