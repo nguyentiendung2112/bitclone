@@ -12,7 +12,7 @@
 
 namespace FileHandlerTest {
   TEST(FileHandler, appendAndReadAt) {
-    char filename[] = "/tmp/filehandler_test1";
+    char filename[] = "filehandler_testXXXXXX";
     int fd = mkstemp(filename);
     ASSERT_NE(fd, -1);
 

@@ -15,7 +15,6 @@
 #include "FileHandler.h"
 #include "LogIndex.h"
 
-template<typename K, typename V>
 class LogReader {
   static std::unique_ptr<LogIndex> deserialize(std::vector<std::byte> &data) {
     size_t pos = 0;
