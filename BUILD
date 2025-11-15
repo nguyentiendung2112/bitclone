@@ -69,6 +69,18 @@ cc_test(
 )
 
 cc_test(
+    name = "test-keydir",
+    srcs = glob([
+        "tests/cpp/keydir/test_keydir.cc",
+    ]),
+    deps = [
+        ":cpp-dependencies",
+        "@googletest//:gtest",
+        "@googletest//:gtest_main",
+    ],
+)
+
+cc_test(
     name = "test-all",
     srcs = glob([
         "tests/cpp/**/*.cc",
