@@ -30,7 +30,7 @@ TEST_F(LogReaderTest, WriteAndReadRecord) {
     std::string value = "bar";
     LogWriter::appendRecord(fd, key, reinterpret_cast<std::byte*>(value.data()), value.size());
 
-    auto logIndex = LogReader<std::string, std::string>::readRecordAt(fd, 0);
+    auto logIndex = LogReader::readRecordAt(fd, 0);
     ASSERT_EQ(logIndex->key, key);
     ASSERT_EQ(logIndex->value, value);
 }//

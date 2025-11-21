@@ -15,14 +15,12 @@ namespace {
 // - Get the entry back using the same key
 // - Verify all fields match the original entry
 TEST(KeyDir, PutAndGet) {
-  // TODO: Implement test
-  // KeyDir keydir;
-  // KeyDirEntry entry(1, "/path/to/file1.data", 0, 100, 1234567890);
-  // keydir.put("key1", entry);
-  // auto result = keydir.get("key1");
-  // ASSERT_TRUE(result.has_value());
-  // EXPECT_EQ(result->file_id, 1);
-  // ... verify other fields
+  auto keydir = KeyDir();
+  KeyDirEntry entry(1, "/path/to/file1.data", 0, 100, 1234567890);
+  keydir.put("key1", entry);
+  auto result = keydir.get("key1");
+  ASSERT_TRUE(result.has_value());
+  EXPECT_EQ(result->file_id, 1);
 }
 
 // Test: Get a non-existent key should return empty optional
@@ -32,9 +30,9 @@ TEST(KeyDir, PutAndGet) {
 // - Verify that get() returns std::nullopt (result.has_value() is false)
 TEST(KeyDir, GetNonExistentKey) {
   // TODO: Implement test
-  // KeyDir keydir;
-  // auto result = keydir.get("nonexistent");
-  // EXPECT_FALSE(result.has_value());
+  KeyDir keydir;
+  auto result = keydir.get("nonexistent");
+  EXPECT_FALSE(result.has_value());
 }
 
 // Test: Update an existing key (last-write-wins)
@@ -46,14 +44,14 @@ TEST(KeyDir, GetNonExistentKey) {
 // - The size should remain the same (1 key, not 2)
 TEST(KeyDir, UpdateExistingKey) {
   // TODO: Implement test
-  // KeyDir keydir;
-  // KeyDirEntry entry1(1, "/path/to/file1.data", 0, 100, 1234567890);
-  // KeyDirEntry entry2(2, "/path/to/file2.data", 200, 150, 1234567900);
-  // keydir.put("key1", entry1);
-  // keydir.put("key1", entry2);
-  // auto result = keydir.get("key1");
-  // ASSERT_TRUE(result.has_value());
-  // EXPECT_EQ(result->file_id, 2);  // Should be the second entry
+  KeyDir keydir;
+  KeyDirEntry entry1(1, "/path/to/file1.data", 0, 100, 1234567890);
+  KeyDirEntry entry2(2, "/path/to/file2.data", 200, 150, 1234567900);
+  keydir.put("key1", entry1);
+  keydir.put("key1", entry2);
+  auto result = keydir.get("key1");
+  ASSERT_TRUE(result.has_value());
+  EXPECT_EQ(result->file_id, 2);  // Should be the second entry
   // ... verify other fields from entry2
 }
 
@@ -65,12 +63,12 @@ TEST(KeyDir, UpdateExistingKey) {
 // - Verify has() returns false for a different key
 TEST(KeyDir, Has) {
   // TODO: Implement test
-  // KeyDir keydir;
-  // KeyDirEntry entry(1, "/path/to/file1.data", 0, 100, 1234567890);
-  // EXPECT_FALSE(keydir.has("key1"));
-  // keydir.put("key1", entry);
-  // EXPECT_TRUE(keydir.has("key1"));
-  // EXPECT_FALSE(keydir.has("key2"));
+  KeyDir keydir;
+  KeyDirEntry entry(1, "/path/to/file1.data", 0, 100, 1234567890);
+  EXPECT_FALSE(keydir.has("key1"));
+  keydir.put("key1", entry);
+  EXPECT_TRUE(keydir.has("key1"));
+  EXPECT_FALSE(keydir.has("key2"));
 }
 
 // Test: Remove a key from KeyDir
@@ -82,14 +80,14 @@ TEST(KeyDir, Has) {
 // - Verify get() returns std::nullopt for the removed key
 TEST(KeyDir, Remove) {
   // TODO: Implement test
-  // KeyDir keydir;
-  // KeyDirEntry entry(1, "/path/to/file1.data", 0, 100, 1234567890);
-  // keydir.put("key1", entry);
-  // EXPECT_TRUE(keydir.has("key1"));
-  // keydir.remove("key1");
-  // EXPECT_FALSE(keydir.has("key1"));
-  // auto result = keydir.get("key1");
-  // EXPECT_FALSE(result.has_value());
+  KeyDir keydir;
+  KeyDirEntry entry(1, "/path/to/file1.data", 0, 100, 1234567890);
+  keydir.put("key1", entry);
+  EXPECT_TRUE(keydir.has("key1"));
+  keydir.remove("key1");
+  EXPECT_FALSE(keydir.has("key1"));
+  auto result = keydir.get("key1");
+  EXPECT_FALSE(result.has_value());
 }
 
 // Test: Remove a non-existent key should not crash
@@ -99,9 +97,9 @@ TEST(KeyDir, Remove) {
 // - Verify the key still doesn't exist after remove
 TEST(KeyDir, RemoveNonExistentKey) {
   // TODO: Implement test
-  // KeyDir keydir;
-  // keydir.remove("nonexistent");  // Should not crash
-  // EXPECT_FALSE(keydir.has("nonexistent"));
+  KeyDir keydir;
+  keydir.remove("nonexistent");  // Should not crash
+  EXPECT_FALSE(keydir.has("nonexistent"));
 }
 
 // Test: Track the size (number of keys) in KeyDir
@@ -112,17 +110,17 @@ TEST(KeyDir, RemoveNonExistentKey) {
 // - Remove a key and verify size decreases
 TEST(KeyDir, Size) {
   // TODO: Implement test
-  // KeyDir keydir;
-  // EXPECT_EQ(keydir.size(), 0);
-  // KeyDirEntry entry1(1, "/path/to/file1.data", 0, 100, 1234567890);
-  // keydir.put("key1", entry1);
-  // EXPECT_EQ(keydir.size(), 1);
-  // keydir.put("key2", entry1);
-  // EXPECT_EQ(keydir.size(), 2);
-  // keydir.put("key1", entry1);  // update doesn't increase size
-  // EXPECT_EQ(keydir.size(), 2);
-  // keydir.remove("key1");
-  // EXPECT_EQ(keydir.size(), 1);
+  KeyDir keydir;
+  EXPECT_EQ(keydir.size(), 0);
+  KeyDirEntry entry1(1, "/path/to/file1.data", 0, 100, 1234567890);
+  keydir.put("key1", entry1);
+  EXPECT_EQ(keydir.size(), 1);
+  keydir.put("key2", entry1);
+  EXPECT_EQ(keydir.size(), 2);
+  keydir.put("key1", entry1);  // update doesn't increase size
+  EXPECT_EQ(keydir.size(), 2);
+  keydir.remove("key1");
+  EXPECT_EQ(keydir.size(), 1);
 }
 
 // Test: Clear all entries from KeyDir
@@ -134,16 +132,16 @@ TEST(KeyDir, Size) {
 // - Verify all previously added keys no longer exist
 TEST(KeyDir, Clear) {
   // TODO: Implement test
-  // KeyDir keydir;
-  // KeyDirEntry entry1(1, "/path/to/file1.data", 0, 100, 1234567890);
-  // KeyDirEntry entry2(2, "/path/to/file2.data", 100, 200, 1234567900);
-  // keydir.put("key1", entry1);
-  // keydir.put("key2", entry2);
-  // EXPECT_EQ(keydir.size(), 2);
-  // keydir.clear();
-  // EXPECT_EQ(keydir.size(), 0);
-  // EXPECT_FALSE(keydir.has("key1"));
-  // EXPECT_FALSE(keydir.has("key2"));
+  KeyDir keydir;
+  KeyDirEntry entry1(1, "/path/to/file1.data", 0, 100, 1234567890);
+  KeyDirEntry entry2(2, "/path/to/file2.data", 100, 200, 1234567900);
+  keydir.put("key1", entry1);
+  keydir.put("key2", entry2);
+  EXPECT_EQ(keydir.size(), 2);
+  keydir.clear();
+  EXPECT_EQ(keydir.size(), 0);
+  EXPECT_FALSE(keydir.has("key1"));
+  EXPECT_FALSE(keydir.has("key2"));
 }
 
 // Test: Handle multiple keys efficiently
@@ -154,22 +152,22 @@ TEST(KeyDir, Clear) {
 // This tests scalability and ensures no data corruption with many entries
 TEST(KeyDir, MultipleKeys) {
   // TODO: Implement test
-  // KeyDir keydir;
-  // for (int i = 0; i < 100; ++i) {
-  //   std::string key = "key" + std::to_string(i);
-  //   KeyDirEntry entry(i, "/path/to/file" + std::to_string(i) + ".data",
-  //                     i * 100, 100, 1234567890 + i);
-  //   keydir.put(key, entry);
-  // }
-  // EXPECT_EQ(keydir.size(), 100);
-  // for (int i = 0; i < 100; ++i) {
-  //   std::string key = "key" + std::to_string(i);
-  //   EXPECT_TRUE(keydir.has(key));
-  //   auto result = keydir.get(key);
-  //   ASSERT_TRUE(result.has_value());
-  //   EXPECT_EQ(result->file_id, i);
-  //   EXPECT_EQ(result->value_pos, i * 100);
-  // }
+  KeyDir keydir;
+  for (int i = 0; i < 100; ++i) {
+    std::string key = "key" + std::to_string(i);
+    KeyDirEntry entry(i, "/path/to/file" + std::to_string(i) + ".data",
+                      i * 100, 100, 1234567890 + i);
+    keydir.put(key, entry);
+  }
+  EXPECT_EQ(keydir.size(), 100);
+  for (int i = 0; i < 100; ++i) {
+    std::string key = "key" + std::to_string(i);
+    EXPECT_TRUE(keydir.has(key));
+    auto result = keydir.get(key);
+    ASSERT_TRUE(result.has_value());
+    EXPECT_EQ(result->file_id, i);
+    EXPECT_EQ(result->value_pos, i * 100);
+  }
 }
 
 // Test: Handle empty string as a key
@@ -179,13 +177,13 @@ TEST(KeyDir, MultipleKeys) {
 // - Verify it can be retrieved
 TEST(KeyDir, EmptyStringKey) {
   // TODO: Implement test
-  // KeyDir keydir;
-  // KeyDirEntry entry(1, "/path/to/file1.data", 0, 100, 1234567890);
-  // keydir.put("", entry);
-  // EXPECT_TRUE(keydir.has(""));
-  // auto result = keydir.get("");
-  // ASSERT_TRUE(result.has_value());
-  // EXPECT_EQ(result->file_id, 1);
+  KeyDir keydir;
+  KeyDirEntry entry(1, "/path/to/file1.data", 0, 100, 1234567890);
+  keydir.put("", entry);
+  EXPECT_TRUE(keydir.has(""));
+  auto result = keydir.get("");
+  ASSERT_TRUE(result.has_value());
+  EXPECT_EQ(result->file_id, 1);
 }
 
 // Test: Handle very long keys
@@ -195,14 +193,14 @@ TEST(KeyDir, EmptyStringKey) {
 // - Verify it works correctly (no truncation or corruption)
 TEST(KeyDir, LongKey) {
   // TODO: Implement test
-  // KeyDir keydir;
-  // std::string long_key(1000, 'a');
-  // KeyDirEntry entry(1, "/path/to/file1.data", 0, 100, 1234567890);
-  // keydir.put(long_key, entry);
-  // EXPECT_TRUE(keydir.has(long_key));
-  // auto result = keydir.get(long_key);
-  // ASSERT_TRUE(result.has_value());
-  // EXPECT_EQ(result->file_id, 1);
+  KeyDir keydir;
+  std::string long_key(1000, 'a');
+  KeyDirEntry entry(1, "/path/to/file1.data", 0, 100, 1234567890);
+  keydir.put(long_key, entry);
+  EXPECT_TRUE(keydir.has(long_key));
+  auto result = keydir.get(long_key);
+  ASSERT_TRUE(result.has_value());
+  EXPECT_EQ(result->file_id, 1);
 }
 
 // Test: KeyDirEntry default constructor
@@ -211,11 +209,11 @@ TEST(KeyDir, LongKey) {
 // - Verify all fields are initialized to 0 or empty
 TEST(KeyDirEntry, DefaultConstructor) {
   // TODO: Implement test
-  // KeyDirEntry entry;
-  // EXPECT_EQ(entry.file_id, 0);
-  // EXPECT_EQ(entry.value_pos, 0);
-  // EXPECT_EQ(entry.value_size, 0);
-  // EXPECT_EQ(entry.timestamp, 0);
+  KeyDirEntry entry;
+  EXPECT_EQ(entry.file_id, 0);
+  EXPECT_EQ(entry.value_pos, 0);
+  EXPECT_EQ(entry.value_size, 0);
+  EXPECT_EQ(entry.timestamp, 0);
 }
 
 // Test: KeyDirEntry parameterized constructor
@@ -224,12 +222,12 @@ TEST(KeyDirEntry, DefaultConstructor) {
 // - Verify all fields are set correctly
 TEST(KeyDirEntry, ParameterizedConstructor) {
   // TODO: Implement test
-  // KeyDirEntry entry(42, "/test/path.data", 100, 200, 9999999999);
-  // EXPECT_EQ(entry.file_id, 42);
-  // EXPECT_EQ(entry.file_path, "/test/path.data");
-  // EXPECT_EQ(entry.value_pos, 100);
-  // EXPECT_EQ(entry.value_size, 200);
-  // EXPECT_EQ(entry.timestamp, 9999999999);
+  KeyDirEntry entry(42, "/test/path.data", 100, 200, 9999999999);
+  EXPECT_EQ(entry.file_id, 42);
+  EXPECT_EQ(entry.file_path, "/test/path.data");
+  EXPECT_EQ(entry.value_pos, 100);
+  EXPECT_EQ(entry.value_size, 200);
+  EXPECT_EQ(entry.timestamp, 9999999999);
 }
 
 }  // namespace
