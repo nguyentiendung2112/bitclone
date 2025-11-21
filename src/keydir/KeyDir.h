@@ -83,8 +83,8 @@ class KeyDir {
   // - Clear the entire data structure
   // - After calling this, size() should return 0
   void clear() {
-    // TODO: Implement me
-
+    this->hash_map.clear();
+    this->size_ = 0;
   }
 
   ~KeyDir() = default;

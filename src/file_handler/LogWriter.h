@@ -15,7 +15,7 @@
 using namespace std;
 
 class LogWriter {
-  static std::vector<byte> serialize(string key, std::byte *value, size_t value_size) {
+  static std::vector<byte> serialize(string key, const std::byte *value, size_t value_size) {
     // layout [uint64_t key_size][uint64_t value_size][key bytes][value bytes]
 
     auto key_size = static_cast<uint64_t>(key.size());
@@ -51,7 +51,7 @@ class LogWriter {
   public:
     LogWriter() = default;
 
-    static void appendRecord(int file_descriptor, const string &key, std::byte *value, const size_t value_size) {
+    static void appendRecord(int file_descriptor, const string &key, const std::byte *value, const size_t value_size) {
       if (file_descriptor < 0) {
         throw std::runtime_error("invalid file descriptor");
       }
