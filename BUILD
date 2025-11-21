@@ -81,6 +81,30 @@ cc_test(
 )
 
 cc_test(
+    name = "test-bitcask-store",
+    srcs = glob([
+        "tests/cpp/bitcask/test_bitcask_store.cc",
+    ]),
+    deps = [
+        ":cpp-dependencies",
+        "@googletest//:gtest",
+        "@googletest//:gtest_main",
+    ],
+)
+
+cc_test(
+    name = "test-bitcask-all",
+    srcs = glob([
+        "tests/cpp/bitcask/*.cc",
+    ]),
+    deps = [
+        ":cpp-dependencies",
+        "@googletest//:gtest",
+        "@googletest//:gtest_main",
+    ],
+)
+
+cc_test(
     name = "test-all",
     srcs = glob([
         "tests/cpp/**/*.cc",
