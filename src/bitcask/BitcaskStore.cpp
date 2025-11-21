@@ -2,6 +2,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <sys/stat.h>
+#include <cerrno>
 #include <chrono>
 #include <iomanip>
 #include <sstream>
@@ -15,9 +16,14 @@ BitcaskStore::BitcaskStore(const std::string& directory)
 BitcaskStore::BitcaskStore(const std::string& directory, const BitcaskConfig& config)
     : config_(config), next_file_id_(1) {
     config_.directory = directory;
-    mkdir(config_.directory.c_str(), 0755);
+    if (mkdir(config_.directory.c_str(), 0755) != 0 && errno != EEXIST) {
+        throw std::runtime_error("Failed to create directory: " + config_.directory);
+    }
     std::string initial_path = generateFilePath(next_file_id_);
     int fd = openFile(initial_path, true);
+    if (fd < 0) {
+        throw std::runtime_error("Failed to open initial data file: " + initial_path);
+    }
     active_file_ = FileMetadata(next_file_id_, initial_path, fd, 0);
     next_file_id_++;
 }
@@ -92,7 +98,7 @@ bool BitcaskStore::put(const std::string& key, const std::byte* value, std::size
     std::uint64_t timestamp = getCurrentTimestamp();
     
     try {
-        LogWriter::appendRecord(active_file_.file_descriptor, key, const_cast<std::byte*>(value), value_size);
+        LogWriter::appendRecord(active_file_.file_descriptor, key, value, value_size);
     } catch (...) {
         return false;
     }
