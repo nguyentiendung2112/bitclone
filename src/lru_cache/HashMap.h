@@ -34,6 +34,7 @@ class HashMap {
   bool has(K key);
   V get(K key);
   V getOrDefault(K key, V default_value);
+  void clear();
 
   ~HashMap() {
     for (std::uint64_t i = 0; i < this->number_of_buckets; ++i) {
@@ -110,6 +111,19 @@ bool HashMap<K, V>::has(K key) {
     head = head->next;
   }
   return false;
+}
+
+template <typename K, typename V>
+void HashMap<K, V>::clear() {
+  for (std::uint64_t i = 0; i < this->number_of_buckets; ++i) {
+    HashMapNode<K, V>* current = this->buckets[i];
+    while (current != nullptr) {
+      HashMapNode<K, V>* temp = current;
+      current = current->next;
+      delete temp;
+    }
+    this->buckets[i] = nullptr;
+  }
 }
 
 #endif  // HASHMAP_H
